@@ -1,0 +1,686 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Solicitar Acesso - FrontTune</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #0f0f23 0%, #1a1a2e 50%, #16213e 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            color: #ffffff;
+        }
+
+        .container {
+            background: linear-gradient(145deg, #1e1e2f 0%, #232340 100%);
+            border-radius: 20px;
+            box-shadow: 
+                0 25px 50px rgba(0, 0, 0, 0.5),
+                0 0 0 1px rgba(255, 255, 255, 0.05);
+            padding: 50px;
+            width: 100%;
+            max-width: 480px;
+            position: relative;
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #667eea, #764ba2, #f093fb, #f5576c);
+            border-radius: 20px 20px 0 0;
+        }
+
+        .logo {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .logo h1 {
+            color: #ffffff;
+            font-size: 2.8rem;
+            font-weight: 800;
+            margin-bottom: 12px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-shadow: 0 0 30px rgba(102, 126, 234, 0.3);
+        }
+
+        .logo p {
+            color: #a0a0b8;
+            font-size: 1.1rem;
+            font-weight: 400;
+            opacity: 0.9;
+        }
+
+        .form-group {
+            margin-bottom: 28px;
+        }
+
+        .form-group label {
+            display: block;
+            font-weight: 600;
+            color: #e0e0e0;
+            margin-bottom: 10px;
+            font-size: 0.95rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 16px 20px;
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            background: rgba(255, 255, 255, 0.05);
+            color: #ffffff;
+            font-family: inherit;
+        }
+
+        .form-group input::placeholder {
+            color: rgba(255, 255, 255, 0.4);
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: #667eea;
+            background: rgba(102, 126, 234, 0.1);
+            box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.15);
+            transform: translateY(-2px);
+        }
+
+        .form-group input:valid {
+            border-color: rgba(16, 185, 129, 0.5);
+        }
+
+        .form-group input:invalid:not(:placeholder-shown) {
+            border-color: rgba(239, 68, 68, 0.5);
+        }
+
+        .submit-btn {
+            width: 100%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 18px;
+            border: none;
+            border-radius: 12px;
+            font-size: 1.1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-bottom: 24px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .submit-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.5s;
+        }
+
+        .submit-btn:hover::before {
+            left: 100%;
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 35px rgba(102, 126, 234, 0.4);
+            background: linear-gradient(135deg, #7c8ef0 0%, #8b5fb5 100%);
+        }
+
+        .submit-btn:active {
+            transform: translateY(-1px);
+        }
+
+        .submit-btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .login-link {
+            text-align: center;
+            margin-top: 24px;
+        }
+
+        .login-link a {
+            color: #667eea;
+            text-decoration: none;
+            font-size: 0.95rem;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            padding: 8px 16px;
+            border-radius: 8px;
+            border: 1px solid rgba(102, 126, 234, 0.2);
+            display: inline-block;
+        }
+
+        .login-link a:hover {
+            color: #ffffff;
+            background: rgba(102, 126, 234, 0.1);
+            border-color: #667eea;
+            transform: translateY(-1px);
+        }
+
+        .success-message {
+            display: none;
+            background: linear-gradient(135deg, #10b981, #059669);
+            color: #ffffff;
+            padding: 18px 20px;
+            border-radius: 12px;
+            margin-bottom: 24px;
+            text-align: center;
+            font-weight: 600;
+            box-shadow: 0 8px 25px rgba(16, 185, 129, 0.3);
+            border: 1px solid rgba(16, 185, 129, 0.3);
+        }
+
+        .error-message {
+            display: none;
+            background: linear-gradient(135deg, #ef4444, #dc2626);
+            color: #ffffff;
+            padding: 18px 20px;
+            border-radius: 12px;
+            margin-bottom: 24px;
+            text-align: center;
+            font-weight: 600;
+            box-shadow: 0 8px 25px rgba(239, 68, 68, 0.3);
+            border: 1px solid rgba(239, 68, 68, 0.3);
+        }
+
+        .loading {
+            display: none;
+            text-align: center;
+            color: #667eea;
+            font-weight: 600;
+            margin-bottom: 24px;
+            font-size: 1rem;
+        }
+
+        .loading::after {
+            content: "";
+            display: inline-block;
+            width: 24px;
+            height: 24px;
+            border: 3px solid rgba(102, 126, 234, 0.3);
+            border-radius: 50%;
+            border-top: 3px solid #667eea;
+            animation: spin 1s linear infinite;
+            margin-left: 12px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Animação de entrada */
+        .container {
+            animation: fadeInUp 0.6s ease-out;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Media Queries para Responsividade */
+        @media (max-width: 600px) {
+            body {
+                padding: 15px;
+            }
+            
+            .container {
+                padding: 40px 30px;
+                border-radius: 16px;
+            }
+            
+            .logo h1 {
+                font-size: 2.2rem;
+            }
+            
+            .logo p {
+                font-size: 1rem;
+            }
+            
+            .form-group {
+                margin-bottom: 24px;
+            }
+            
+            .form-group input {
+                padding: 14px 18px;
+                font-size: 16px; /* Evita zoom no iOS */
+            }
+            
+            .submit-btn {
+                padding: 16px;
+                font-size: 1rem;
+            }
+        }
+
+        @media (max-width: 400px) {
+            .container {
+                padding: 30px 20px;
+            }
+            
+            .logo h1 {
+                font-size: 1.9rem;
+            }
+        }
+
+        /* Melhorias para acessibilidade */
+        @media (prefers-reduced-motion: reduce) {
+            *, ::before, ::after {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+            }
+        }
+
+        /* Estados de foco melhorados para acessibilidade */
+        .submit-btn:focus-visible,
+        .login-link a:focus-visible {
+            outline: 2px solid #667eea;
+            outline-offset: 2px;
+        }
+
+        .form-group input:focus-visible {
+            outline: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="logo">
+            <h1>FrontTune</h1>
+            <p>Solicite acesso à nossa plataforma</p>
+        </div>
+
+        <div id="successMessage" class="success-message">
+            Obrigado! Sua solicitação foi recebida. Em breve, você receberá um e-mail com suas credenciais de acesso.
+        </div>
+
+        <div id="errorMessage" class="error-message">
+            Erro ao enviar solicitação. Tente novamente em alguns instantes.
+        </div>
+
+        <div id="loading" class="loading">
+            Enviando solicitação...
+        </div>
+
+        <form id="checkoutForm">
+            <div class="form-group">
+                <label for="barName">Nome do Bar *</label>
+                <input type="text" id="barName" name="barName" required placeholder="Digite o nome do seu bar">
+            </div>
+
+            <div class="form-group">
+                <label for="fullName">Seu Nome Completo *</label>
+                <input type="text" id="fullName" name="fullName" required placeholder="Digite seu nome completo">
+            </div>
+
+            <div class="form-group">
+                <label for="email">Seu Email *</label>
+                <input type="email" id="email" name="email" required placeholder="Digite seu email">
+            </div>
+
+            <div class="form-group">
+                <label for="whatsapp">Número do WhatsApp *</label>
+                <input type="tel" id="whatsapp" name="whatsapp" required placeholder="(11) 99999-9999">
+            </div>
+
+            <button type="submit" class="submit-btn" id="submitBtn">
+                Solicitar Acesso
+            </button>
+        </form>
+
+        <div class="login-link">
+            <a href="login.html">Já tenho conta? Fazer Login</a>
+        </div>
+    </div>
+
+    <script>
+        // Configuração do webhook do n8n
+        const N8N_WEBHOOK_URL = 'https://neivan8n.site/webhook-test/notificacao';
+
+        // Elementos DOM
+        const form = document.getElementById('checkoutForm');
+        const submitBtn = document.getElementById('submitBtn');
+        const successMessage = document.getElementById('successMessage');
+        const errorMessage = document.getElementById('errorMessage');
+        const loadingElement = document.getElementById('loading');
+
+        // Event listener principal do formulário
+        form.addEventListener('submit', async function(e) {
+            // Impede o recarregamento da página
+            e.preventDefault();
+            
+            // Coleta os dados dos inputs do formulário
+            const formData = {
+                barName: document.getElementById('barName').value.trim(),
+                fullName: document.getElementById('fullName').value.trim(),
+                email: document.getElementById('email').value.trim(),
+                whatsapp: document.getElementById('whatsapp').value.trim(),
+                timestamp: new Date().toISOString(),
+                source: 'checkout-form',
+                userAgent: navigator.userAgent,
+                referrer: document.referrer || 'direct'
+            };
+
+            // Validações do lado cliente
+            if (!validateForm(formData)) {
+                return;
+            }
+
+            // Inicia o processo de envio
+            setLoadingState(true);
+            hideAllMessages();
+
+            try {
+                // Faz a chamada fetch com método POST para o webhook do n8n
+                const controller = new AbortController();
+                const timeoutId = setTimeout(() => controller.abort(), 30000); // 30 segundos timeout
+                
+                const response = await fetch(N8N_WEBHOOK_URL, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json',
+                        'User-Agent': 'FrontTune-Checkout/1.0'
+                    },
+                    body: JSON.stringify(formData),
+                    signal: controller.signal
+                });
+                
+                clearTimeout(timeoutId);
+
+                // Log da resposta completa para debug
+                console.log('Status da resposta:', response.status);
+                console.log('Headers da resposta:', Object.fromEntries(response.headers.entries()));
+                
+                // Verifica se a resposta foi bem-sucedida
+                if (response.ok) {
+                    // Sucesso: esconde o formulário e mostra mensagem de sucesso
+                    const responseData = await response.json().catch(() => ({}));
+                    console.log('Dados da resposta:', responseData);
+                    handleSuccess();
+                } else {
+                    // Erro HTTP: tenta extrair detalhes do erro
+                    const errorData = await response.json().catch(() => ({}));
+                    console.error('Erro detalhado do n8n:', errorData);
+                    
+                    const errorMsg = errorData.message || `Erro ${response.status}: ${response.statusText}`;
+                    throw new Error(errorMsg);
+                }
+                
+            } catch (error) {
+                // Tratamento de erros para quando a chamada para o n8n falha
+                console.error('Erro ao enviar dados para n8n:', error);
+                handleError(error);
+                
+            } finally {
+                // Sempre remove o estado de loading
+                setLoadingState(false);
+            }
+        });
+
+        // Função para validar o formulário
+        function validateForm(data) {
+            // Validação de campos obrigatórios
+            if (!data.barName || !data.fullName || !data.email || !data.whatsapp) {
+                showError('Por favor, preencha todos os campos obrigatórios.');
+                return false;
+            }
+
+            // Validação específica do email
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailRegex.test(data.email)) {
+                showError('Por favor, insira um email válido.');
+                return false;
+            }
+
+            // Validação do WhatsApp
+            const whatsappClean = data.whatsapp.replace(/\D/g, '');
+            if (whatsappClean.length < 10 || whatsappClean.length > 11) {
+                showError('Por favor, insira um número de WhatsApp válido.');
+                return false;
+            }
+
+            // Validação de comprimento mínimo
+            if (data.barName.length < 2) {
+                showError('O nome do bar deve ter pelo menos 2 caracteres.');
+                return false;
+            }
+
+            if (data.fullName.length < 3) {
+                showError('Seu nome completo deve ter pelo menos 3 caracteres.');
+                return false;
+            }
+
+            return true;
+        }
+
+        // Função para lidar com o sucesso do envio
+        function handleSuccess() {
+            // Esconde o formulário
+            form.style.display = 'none';
+            
+            // Exibe mensagem de sucesso amigável
+            successMessage.style.display = 'block';
+            
+            // Opcional: scroll suave para a mensagem de sucesso
+            successMessage.scrollIntoView({ 
+                behavior: 'smooth', 
+                block: 'center' 
+            });
+            
+            // Log para debug
+            console.log('✅ Solicitação enviada com sucesso para n8n');
+            
+            // Opcional: Redirecionar após alguns segundos
+            setTimeout(() => {
+                // Uncomment se quiser redirecionar automaticamente
+                // window.location.href = 'success.html';
+            }, 3000);
+        }
+
+        // Função para lidar com erros
+        function handleError(error) {
+            let errorMsg = 'Erro inesperado. Tente novamente em alguns instantes.';
+            
+            // Personaliza mensagem baseada no tipo de erro
+            if (error.name === 'TypeError' && error.message.includes('fetch')) {
+                errorMsg = 'Erro de conexão. Verifique sua internet e tente novamente.';
+            } else if (error.message.includes('500')) {
+                errorMsg = 'Erro no servidor. Nossa equipe foi notificada. Tente novamente em alguns minutos.';
+            } else if (error.message.includes('400')) {
+                errorMsg = 'Dados inválidos. Verifique as informações e tente novamente.';
+            } else if (error.message.includes('404')) {
+                errorMsg = 'Webhook não encontrado. Entre em contato com o suporte técnico.';
+            } else if (error.message.includes('timeout')) {
+                errorMsg = 'Timeout na requisição. Tente novamente.';
+            } else if (error.message.includes('webhook') && error.message.includes('not registered')) {
+                errorMsg = 'Sistema temporariamente indisponível. Tente novamente em alguns minutos.';
+            }
+            
+            showError(errorMsg);
+            
+            // Log detalhado do erro para debug
+            console.error('Detalhes do erro:', {
+                message: error.message,
+                name: error.name,
+                stack: error.stack,
+                timestamp: new Date().toISOString()
+            });
+        }
+
+        // Função para controlar o estado de loading
+        function setLoadingState(isLoading) {
+            if (isLoading) {
+                loadingElement.style.display = 'block';
+                submitBtn.disabled = true;
+                submitBtn.textContent = 'Enviando...';
+            } else {
+                loadingElement.style.display = 'none';
+                submitBtn.disabled = false;
+                submitBtn.textContent = 'Solicitar Acesso';
+            }
+        }
+
+        // Função para mostrar mensagem de sucesso
+        function showSuccess() {
+            successMessage.style.display = 'block';
+            errorMessage.style.display = 'none';
+        }
+
+        // Função para mostrar mensagem de erro
+        function showError(message) {
+            errorMessage.textContent = message;
+            errorMessage.style.display = 'block';
+            successMessage.style.display = 'none';
+            
+            // Auto-hide erro após 8 segundos
+            setTimeout(() => {
+                if (errorMessage.style.display === 'block') {
+                    errorMessage.style.display = 'none';
+                }
+            }, 8000);
+        }
+
+        // Função para esconder todas as mensagens
+        function hideAllMessages() {
+            successMessage.style.display = 'none';
+            errorMessage.style.display = 'none';
+        }
+
+        // Event listeners para limpar mensagens quando usuário digita
+        document.querySelectorAll('input').forEach(input => {
+            input.addEventListener('input', hideAllMessages);
+            
+            // Feedback visual em tempo real
+            input.addEventListener('blur', function() {
+                if (this.value.trim()) {
+                    this.classList.add('has-value');
+                } else {
+                    this.classList.remove('has-value');
+                }
+            });
+        });
+
+        // Validação em tempo real do email
+        document.getElementById('email').addEventListener('input', function() {
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (this.value && !emailRegex.test(this.value)) {
+                this.setCustomValidity('Email inválido');
+            } else {
+                this.setCustomValidity('');
+            }
+        });
+
+        // Máscara e validação do WhatsApp
+        document.getElementById('whatsapp').addEventListener('input', function(e) {
+            let value = e.target.value.replace(/\D/g, '');
+            
+            // Aplica a máscara baseada no tamanho
+            if (value.length <= 10) {
+                // Formato: (11) 9999-9999
+                value = value.replace(/(\d{2})(\d)/, '($1) $2');
+                value = value.replace(/(\d{4})(\d)/, '$1-$2');
+            } else {
+                // Formato: (11) 99999-9999
+                value = value.replace(/(\d{2})(\d)/, '($1) $2');
+                value = value.replace(/(\d{5})(\d)/, '$1-$2');
+            }
+            
+            e.target.value = value;
+            
+            // Validação em tempo real
+            const cleanValue = value.replace(/\D/g, '');
+            if (cleanValue.length > 0 && (cleanValue.length < 10 || cleanValue.length > 11)) {
+                this.setCustomValidity('WhatsApp deve ter 10 ou 11 dígitos');
+            } else {
+                this.setCustomValidity('');
+            }
+        });
+
+        // Previne duplo envio
+        let isSubmitting = false;
+        form.addEventListener('submit', function() {
+            if (isSubmitting) {
+                return false;
+            }
+            isSubmitting = true;
+            setTimeout(() => { isSubmitting = false; }, 2000);
+        });
+
+        // Log inicial para debug
+        console.log('🚀 FrontTune Checkout Form initialized');
+        console.log('📡 N8N Webhook URL:', N8N_WEBHOOK_URL);
+        
+        // Testa a disponibilidade do webhook na inicialização
+        async function testWebhookAvailability() {
+            try {
+                const response = await fetch(N8N_WEBHOOK_URL, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ test: true })
+                });
+                
+                if (response.status === 404) {
+                    const errorData = await response.json();
+                    if (errorData.message && errorData.message.includes('not registered')) {
+                        console.warn('⚠️ Webhook não está ativo no n8n. Você precisa:');
+                        console.warn('1. Abrir o workflow no n8n');
+                        console.warn('2. Clicar em "Execute workflow"');
+                        console.warn('3. Ou ativar o webhook em modo produção');
+                        
+                        // Mostra aviso discreto na interface
+                        showError('⚠️ Sistema em modo de teste. Entre em contato com o suporte se necessário.');
+                    }
+                } else {
+                    console.log('✅ Webhook disponível');
+                }
+            } catch (error) {
+                console.warn('⚠️ Não foi possível testar o webhook:', error.message);
+            }
+        }
+        
+        // Testa webhook após 1 segundo
+        setTimeout(testWebhookAvailability, 1000);
+    </script>
+</body>
+</html>
